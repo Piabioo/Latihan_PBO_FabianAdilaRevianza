@@ -1,14 +1,6 @@
-<?php
-declare(strict_types=1);
-
-require_once __DIR__ . '/Tiket.php';
-
 class TiketVelvet extends Tiket {
 
-    /** @var string Paket bantal & selimut */
     protected string $bantalSelimutPack;
-
-    /** @var string Layanan butler */
     protected string $layananButler;
 
     public function __construct(
@@ -26,12 +18,11 @@ class TiketVelvet extends Tiket {
     }
 
     public function hitungTotalHarga(): float {
-        // Contoh: Velvet ada tambahan 50% dari harga dasar
-        return $this->hargaDasarTiket * 1.5;
+        return ($this->jumlah_kursi * $this->hargaDasarTiket) * 1.50;
     }
 
     public function tampilkanInfoFasilitas(): string {
-        return "Bantal & Selimut Pack : {$this->bantalSelimutPack}\n"
-             . "Layanan Butler : {$this->layananButler}\n";
+        return "Bantal Selimut Pack: {$this->bantalSelimutPack}<br>"
+             . "Layanan Butler: {$this->layananButler}<br>";
     }
 }

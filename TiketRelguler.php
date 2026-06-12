@@ -1,14 +1,6 @@
-<?php
-declare(strict_types=1);
-
-require_once __DIR__ . '/Tiket.php';
-
 class TiketReguler extends Tiket {
 
-    /** @var string Tipe audio, dari kolom tipe_audio */
     protected string $tipeAudio;
-
-    /** @var string Lokasi baris kursi, dari kolom lokasi_baris */
     protected string $lokalBaris;
 
     public function __construct(
@@ -26,12 +18,11 @@ class TiketReguler extends Tiket {
     }
 
     public function hitungTotalHarga(): float {
-        // Contoh: Regular tidak ada tambahan, total = hargaDasarTiket
-        return $this->hargaDasarTiket;
+        return $this->jumlah_kursi * $this->hargaDasarTiket;
     }
 
     public function tampilkanInfoFasilitas(): string {
-        return "Tipe Audio : {$this->tipeAudio}\n"
-             . "Lokasi Baris : {$this->lokalBaris}\n";
+        return "Tipe Audio: {$this->tipeAudio}<br>"
+             . "Lokasi Baris: {$this->lokalBaris}<br>";
     }
 }
