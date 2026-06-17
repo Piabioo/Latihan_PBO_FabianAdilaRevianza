@@ -1,28 +1,22 @@
-class TiketReguler extends Tiket {
+<?php
+require_once 'Tiket.php';
 
-    protected string $tipeAudio;
-    protected string $lokalBaris;
+class TiketRegular extends Tiket {
+    protected $tipeAudio;
+    protected $lokasiBaris;
 
-    public function __construct(
-        int $id_tiket,
-        string $nama_film,
-        string $jadwal_tayang,
-        int $jumlah_kursi,
-        float $hargaDasarTiket,
-        string $tipeAudio,
-        string $lokalBaris
-    ) {
-        parent::__construct($id_tiket, $nama_film, $jadwal_tayang, $jumlah_kursi, $hargaDasarTiket);
-        $this->tipeAudio = $tipeAudio;
-        $this->lokalBaris = $lokalBaris;
+    public function getDaftarRegular($db) {
+        $stmt = $db->prepare("SELECT * FROM tabel_tiket WHERE jenis_studio='regular'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function hitungTotalHarga(): float {
-        return $this->jumlah_kursi * $this->hargaDasarTiket;
+    public function hitungTotalHarga() {
+        return $this->hargaDasarTiket;
     }
 
-    public function tampilkanInfoFasilitas(): string {
-        return "Tipe Audio: {$this->tipeAudio}<br>"
-             . "Lokasi Baris: {$this->lokalBaris}<br>";
+    public function tampilkanInfoStudio() {
+        return "Studio Regular - Harga standar.";
     }
 }
+?>

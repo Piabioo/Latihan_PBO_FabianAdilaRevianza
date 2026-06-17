@@ -1,28 +1,22 @@
+<?php
+require_once 'Tiket.php';
+
 class TiketVelvet extends Tiket {
+    protected $bantalSelimut;
+    protected $layananButler;
 
-    protected string $bantalSelimutPack;
-    protected string $layananButler;
-
-    public function __construct(
-        int $id_tiket,
-        string $nama_film,
-        string $jadwal_tayang,
-        int $jumlah_kursi,
-        float $hargaDasarTiket,
-        string $bantalSelimutPack,
-        string $layananButler
-    ) {
-        parent::__construct($id_tiket, $nama_film, $jadwal_tayang, $jumlah_kursi, $hargaDasarTiket);
-        $this->bantalSelimutPack = $bantalSelimutPack;
-        $this->layananButler = $layananButler;
+    public function getDaftarVelvet($db) {
+        $stmt = $db->prepare("SELECT * FROM tabel_tiket WHERE jenis_studio='velvet'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function hitungTotalHarga(): float {
-        return ($this->jumlah_kursi * $this->hargaDasarTiket) * 1.50;
+    public function hitungTotalHarga() {
+        return $this->hargaDasarTiket - 20000; // diskon velvet Rp20.000
     }
 
-    public function tampilkanInfoFasilitas(): string {
-        return "Bantal Selimut Pack: {$this->bantalSelimutPack}<br>"
-             . "Layanan Butler: {$this->layananButler}<br>";
+    public function tampilkanInfoStudio() {
+        return "Studio Velvet - Diskon Rp20.000.";
     }
 }
+?>
