@@ -32,13 +32,36 @@ $daftarImax = $tiketImaxInstance->getDaftarImax($db);
 $tiketVelvetInstance = new TiketVelvet([]);
 $daftarVelvet = $tiketVelvetInstance->getDaftarVelvet($db);
 
-// Total akumulasi seluruh film di database
-$totalSemuaFilm = count($daftarRegular) + count($daftarImax) + count($daftarVelvet);
-
 // ==========================================
 // LOGIKA FILTER NAVIGASI SIDEBAR
 // ==========================================
 $view = $_GET['view'] ?? 'all';
+
+// Hitung statistik berdasarkan view aktif (Sesuai Rumus Ketentuan Soal)
+$currentFilmCount = 0;
+$currentTotalPendapatan = 0;
+
+if ($view == 'regular' || $view == 'all') {
+    $currentFilmCount += count($daftarRegular);
+    foreach ($daftarRegular as $row) {
+        $t = new TiketRegular($row);
+        $currentTotalPendapatan += $t->hitungTotalHarga();
+    }
+}
+if ($view == 'imax' || $view == 'all') {
+    $currentFilmCount += count($daftarImax);
+    foreach ($daftarImax as $row) {
+        $t = new TiketImax($row);
+        $currentTotalPendapatan += $t->hitungTotalHarga();
+    }
+}
+if ($view == 'velvet' || $view == 'all') {
+    $currentFilmCount += count($daftarVelvet);
+    foreach ($daftarVelvet as $row) {
+        $t = new TiketVelvet($row);
+        $currentTotalPendapatan += $t->hitungTotalHarga();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +69,7 @@ $view = $_GET['view'] ?? 'all';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineSpace - Admin Theater Dashboard</title>
+    <title>CINEVERSE - Theater Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -55,7 +78,7 @@ $view = $_GET['view'] ?? 'all';
         <aside class="sidebar">
             <div class="brand">
                 <span class="logo-icon">🎬</span>
-                <h2>CINE<span>SPACE</span></h2>
+                <h2>CINE<span>VERSE</span></h2>
             </div>
             <nav class="menu">
                 <a href="index.php?view=all" class="<?= $view == 'all' ? 'active' : '' ?>"><span class="icon">📊</span> Semua Studio</a>
@@ -81,41 +104,21 @@ $view = $_GET['view'] ?? 'all';
                 <div class="stat-card">
                     <div class="stat-icon icon-blue">🎬</div>
                     <div class="stat-info">
-                        <h3>
-                            <?php 
-                            if ($view == 'regular') {
-                                echo count($daftarRegular);
-                            } elseif ($view == 'imax') {
-                                echo count($daftarImax);
-                            } elseif ($view == 'velvet') {
-                                echo count($daftarVelvet);
-                            } else {
-                                echo $totalSemuaFilm;
-                            }
-                            ?>
-                        </h3>
-                        <p>
-                            <?php 
-                            if ($view == 'all') {
-                                echo "Total Semua Film";
-                            } else {
-                                echo "Film " . ucfirst($view) . " Aktif";
-                            }
-                            ?>
-                        </p>
+                        <h3><?= $currentFilmCount ?></h3>
+                        <p><?= $view == 'all' ? 'Total Semua Film' : 'Film ' . ucfirst($view) . ' Aktif' ?></p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon icon-green">💺</div>
+                    <div class="stat-icon icon-green">💰</div>
                     <div class="stat-info">
-                        <h3>Active</h3>
-                        <p>Studio Monitoring</p>
+                        <h3>Rp <?= number_format($currentTotalPendapatan, 0, ',', '.') ?></h3>
+                        <p>Total Biaya / Pendapatan</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon icon-purple">💎</div>
                     <div class="stat-info">
-                        <h3>Premium</h3>
+                        <h3>Active</h3>
                         <p>System Online</p>
                     </div>
                 </div>

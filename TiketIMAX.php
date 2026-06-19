@@ -12,11 +12,12 @@ class TiketImax extends Tiket {
     }
 
     public function hitungTotalHarga() {
-        return $this->hargaDasarTiket * 1.25; // surcharge 25%
+        // SESUAI SOAL: (jumlah_kursi * hargaDasarTiket) + 35000
+        return ($this->jumlah_kursi * $this->hargaDasarTiket) + 35000;
     }
 
     public function tampilkanInfoStudio() {
-        return "Studio IMAX - Biaya tambahan 25%.";
+        return "Studio IMAX - Biaya tambahan Flat Rp35.000.";
     }
 }
 ?>

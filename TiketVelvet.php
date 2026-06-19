@@ -12,11 +12,12 @@ class TiketVelvet extends Tiket {
     }
 
     public function hitungTotalHarga() {
-        return $this->hargaDasarTiket - 20000; // diskon velvet Rp20.000
+        // SESUAI SOAL: (jumlah_kursi * hargaDasarTiket) * 1.50
+        return ($this->jumlah_kursi * $this->hargaDasarTiket) * 1.50;
     }
 
     public function tampilkanInfoStudio() {
-        return "Studio Velvet - Diskon Rp20.000.";
+        return "Studio Velvet - Surcharge Premium 50%.";
     }
 }
 ?>

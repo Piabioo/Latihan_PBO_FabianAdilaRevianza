@@ -12,7 +12,8 @@ class TiketRegular extends Tiket {
     }
 
     public function hitungTotalHarga() {
-        return $this->hargaDasarTiket;
+        // SESUAI SOAL: jumlah_kursi * hargaDasarTiket
+        return $this->jumlah_kursi * $this->hargaDasarTiket;
     }
 
     public function tampilkanInfoStudio() {
